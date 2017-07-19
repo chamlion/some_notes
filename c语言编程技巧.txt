@@ -1,0 +1,1 @@
+sscanf("1 2 3","%d %d %d",buf1, buf2, buf3);  格式化读取数据

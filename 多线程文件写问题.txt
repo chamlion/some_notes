@@ -1,0 +1,13 @@
+int fd = open(filename.c_str(), O_APPEND|O_CREAT|O_WRONLY|O_CLOEXEC, DEFFILEMODE);
+ O_APPEND 将lseek和write操作原子化，每次都在文件的最后写入文件，且write操作是
+ dup2可以用来复制文件描述符
+ 大多数的unix和Linux都将write设计为原子操作，但这只限于文件，对于管道（pipe），套接字（socket）
+ 也就是文件的write是线程安全的
+比如日志系统写满时，可以
+rename(oldname, newname);
+fd = open(oldname,...);
+.使用dup2系统函数把fd_new复制到fd_old上
+dup2(fd, fd_);
+.关闭fd_new
+close(fd);
+但此时fd_已经指向新的日志文件
